@@ -15,8 +15,8 @@ function Layout({ children, currentPath, onNavigate }: LayoutProps) {
 
 	return (
 		<>
-			<header className="layout-header">
-				<a className="layout-brand" href="/" onClick={(event) => handleNavigation(event, '/')}>
+			<header className="header-layout">
+				<a className="header-brand" href="/" onClick={(event) => handleNavigation(event, '/')}>
 					Rezervační systém
 				</a>
 				<nav aria-label="Hlavní navigace">
@@ -25,7 +25,9 @@ function Layout({ children, currentPath, onNavigate }: LayoutProps) {
 					<a className={currentPath === '/admin' ? 'active' : ''} href="/admin" onClick={(event) => handleNavigation(event, '/admin')}>Administrace</a>
 				</nav>
 			</header>
-			<main className="layout-content">{children}</main>
+			<main className="container">
+				<div className="content-layout">{children}</div>
+			</main>
 		</>
 	)
 }

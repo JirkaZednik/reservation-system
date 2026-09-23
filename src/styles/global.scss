@@ -1,20 +1,33 @@
 @use './variables' as *;
 @use './breakpoints' as breakpoint;
 
+.container {
+	margin: 0 auto;
+	max-width: 1200px;
+	padding-inline: 32px;
+	width: 100%;
+	box-sizing: border-box;
+
+	@include breakpoint.mobile {
+    	padding-inline: 24px;
+  	}
+}
+
 h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
   color: var(--text-h);
+  line-height: normal;
 }
 
 h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
-  margin: 32px 0;
+  margin-block: 32px;
   @include breakpoint.mobile {
-    font-size: 36px;
-    margin: 20px 0;
+    font-size: 30px;
+    margin-block: 20px;
   }
 }
 
