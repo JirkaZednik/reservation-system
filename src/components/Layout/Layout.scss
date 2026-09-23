@@ -1,0 +1,32 @@
+.layout-header {
+	align-items: center;
+	border-bottom: 1px solid var(--border);
+	display: flex;
+	justify-content: space-between;
+	padding: 20px 32px;
+}
+
+.layout-brand {
+	color: var(--text-h);
+	font-weight: 700;
+	text-decoration: none;
+}
+
+nav {
+	display: flex;
+	gap: 20px;
+}
+
+nav a {
+	color: var(--text);
+	text-decoration: none;
+}
+
+nav a:hover,
+nav a.active {
+	color: var(--accent);
+}
+
+.layout-content {
+	padding: 48px 32px;
+}

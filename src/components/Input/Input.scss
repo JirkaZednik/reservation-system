@@ -1,0 +1,16 @@
+.input-field {
+	display: grid;
+	gap: 6px;
+}
+
+.input-field span {
+	color: var(--text-h);
+	font-weight: 600;
+}
+
+.input-field input {
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	font: inherit;
+	padding: 10px 12px;
+}
