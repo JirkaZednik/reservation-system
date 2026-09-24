@@ -1,28 +1,30 @@
 import type { ReactNode } from 'react'
+/*
+	NavLink:
+	- Speciální odkaz pro routing v React Routeru. (místo <a>)
+	- Pracuje s aktuální URL
+	- Přidá automaticky class active, když je stránka aktivní
+	- Zajistí SPA navigaci bez reloadu
+ */
+import { NavLink } from 'react-router-dom'
 import './Layout.scss'
 
 type LayoutProps = {
 	children: ReactNode
-	currentPath: string
-	onNavigate: (to: string) => void
 }
 
-function Layout({ children, currentPath, onNavigate }: LayoutProps) {
-	function handleNavigation(event: React.MouseEvent<HTMLAnchorElement>, to: string) {
-		event.preventDefault()
-		onNavigate(to)
-	}
-
+//Children v Layout je to, co je mezi otevírací a zavírací značkou <Layout> v App.tsx
+function Layout({ children }: LayoutProps) {
 	return (
 		<>
 			<header className="header-layout">
-				<a className="header-brand" href="/" onClick={(event) => handleNavigation(event, '/')}>
+				<NavLink className="header-brand" to="/">
 					Rezervační systém
-				</a>
+				</NavLink>
 				<nav aria-label="Hlavní navigace">
-					<a className={currentPath === '/' ? 'active' : ''} href="/" onClick={(event) => handleNavigation(event, '/')}>Domů</a>
-					<a className={currentPath === '/reservations' ? 'active' : ''} href="/reservations" onClick={(event) => handleNavigation(event, '/reservations')}>Rezervace</a>
-					<a className={currentPath === '/admin' ? 'active' : ''} href="/admin" onClick={(event) => handleNavigation(event, '/admin')}>Administrace</a>
+					<NavLink to="/" end>Domů</NavLink>
+					<NavLink to="/reservations">Rezervace</NavLink>
+					<NavLink to="/admin">Administrace</NavLink>
 				</nav>
 			</header>
 			<main className="container">

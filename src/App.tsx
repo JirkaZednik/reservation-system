@@ -1,36 +1,31 @@
-//import heroImg from './assets/hero.png'
-
-import { useEffect, useState } from 'react'
 import './App.scss'
+import { lazy, Suspense } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Layout from './components/Layout/Layout'
-//Import Pages
-import Home from './pages/Home'
-import Admin from './pages/Admin'
-import Reservations from './pages/Reservations'
 
+const Home = lazy(() => import('./pages/Home'))
+const Admin = lazy(() => import('./pages/Admin'))
+const Reservations = lazy(() => import('./pages/Reservations'))
 
 function App() {
-  const [path, setPath] = useState(window.location.pathname)
-
-  useEffect(() => {
-    const handlePopState = () => setPath(window.location.pathname)
-    window.addEventListener('popstate', handlePopState)
-
-    return () => window.removeEventListener('popstate', handlePopState)
-  }, [])
-
-  function navigate(to: string) {
-    window.history.pushState({}, '', to)
-    setPath(to)
-  }
-
-  const page = path === '/reservations'
-    ? <Reservations />
-    : path === '/admin'
-      ? <Admin />
-      : <Home />
-
-  return <Layout currentPath={path} onNavigate={navigate}>{page}</Layout>
+  return (
+    <BrowserRouter>
+      {/*
+      Layout je komponenta, která obsahuje hlavičku a hlavní obsah stránky (společný rámec 
+      stránky). Všechny ostatní komponenty (Home, Admin, Reservations) se vykreslí uvnitř 
+      této komponenty jako children.
+      */}
+      <Layout>
+        <Suspense fallback={<p>Načítám stránku...</p>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/reservations" element={<Reservations />} />
+            <Route path="/admin" element={<Admin />} />
+          </Routes>
+        </Suspense>
+      </Layout>
+    </BrowserRouter>
+  )
 }
 
 export default App
