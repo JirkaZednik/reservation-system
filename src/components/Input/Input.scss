@@ -8,10 +8,46 @@
 	font-weight: 600;
 }
 
-.input-field input {
+.input-field input,
+.input-field select {
+	box-sizing: border-box;
 	border: 1px solid var(--border);
 	border-radius: 6px;
 	font: inherit;
 	padding-block: 10px;
 	padding-inline: 12px;
+	width: 100%;
+	color: var(--text-input);
+	font-weight: normal;
+}
+
+.input-field select {
+	padding-inline-end: 40px;
+	appearance: none;
+}
+
+.select-control {
+	position: relative;
+}
+
+.select-control::after {
+	border-bottom: 2px solid var(--text);
+	border-right: 2px solid var(--text);
+	content: '';
+	height: 8px;
+	pointer-events: none;
+	position: absolute;
+	inset-inline-end: 16px;
+	inset-block-start: 50%;
+	transform: translateY(-70%) rotate(45deg);
+	width: 8px;
+}
+
+.input-field input[aria-invalid='true'],
+.input-field select[aria-invalid='true'] {
+	border-color: var(--error);
+}
+
+.input-error {
+	color: var(--error);
 }
