@@ -4,6 +4,7 @@ import AvailabilityCalendar from '../components/AvailabilityCalendar/Availabilit
 import Input from '../components/Input/Input'
 import Button from '../components/Button/Button'
 import { reservationSchema, type ReservationForm } from '../schemas/reservationSchema'
+import type { ReservationTime } from '../constants/reservation'
 
 function Reservations() {
 	const { register, handleSubmit, setValue, control, formState: { errors, isSubmitting } } = useForm<ReservationForm>({
@@ -12,14 +13,15 @@ function Reservations() {
 			name: '',
 			email: '',
 			date: '',
-			time: '',
+			times: [],
 			court: 0,
 		},
 	})
 
 	const selectedDate = useWatch({ control, name: 'date' }) //useWatch sleduje konkrétní pole formuláře/kalendáře a vrací jeho aktuální hodnotu v reálném čase (když se změní datum/čas/hřiště React znovu vykreslí komponentu)
-	const selectedTime = useWatch({ control, name: 'time' })
+	const selectedTimes = useWatch({ control, name: 'times' })
 	const selectedCourt = useWatch({ control, name: 'court' })
+	const dateRegistration = register('date')
 
 	function onSubmit(data: ReservationForm) {
 		console.log('Nová rezervace:', data)
@@ -32,8 +34,12 @@ function Reservations() {
 				<form className="reservation-form" onSubmit={handleSubmit(onSubmit)} noValidate>
 					<Input {...register('name')} id="name" label="Jméno" type="text" placeholder="Jan Novák" error={errors.name?.message} />
 					<Input {...register('email')} id="email" label="E-mail" type="email" placeholder="jan@example.com" autoComplete="email" error={errors.email?.message} />
-					<Input {...register('date')} id="date" label="Datum" type="date" error={errors.date?.message} />
-					{errors.time && <small className="input-error">{errors.time.message}</small>}
+					<Input {...dateRegistration} onChange={(event) => {
+						dateRegistration.onChange(event)
+						setValue('times', [])
+						setValue('court', 0)
+					}} id="date" label="Datum" type="date" error={errors.date?.message} />
+					{errors.times && <small className="input-error">{errors.times.message}</small>}
 					{errors.court && <small className="input-error">{errors.court.message}</small>}
 					<Button type="submit" disabled={isSubmitting}>Rezervovat termín</Button>
 				</form>
@@ -41,10 +47,10 @@ function Reservations() {
 			<div className="reservation-right-panel">
 				<AvailabilityCalendar
 					selectedDate={selectedDate}
-					selectedTime={selectedTime}
+					selectedTimes={selectedTimes}
 					selectedCourt={selectedCourt}
-					onSlotSelect={(time, court) => {
-						setValue('time', time, { shouldDirty: true, shouldValidate: true })
+					onSlotSelect={(times: ReservationTime[], court) => {
+						setValue('times', times, { shouldDirty: true, shouldValidate: true })
 						setValue('court', court, { shouldDirty: true, shouldValidate: true })
 					}}
 				/>
