@@ -12,7 +12,7 @@
 	@include breakpoint.mobile {
 		flex-direction: column;
 		justify-content: center;
-		align-items: flex-start;
+		align-items: center;
 		gap: 16px;
 		padding-block: 12px;
 		padding-inline: 16px;
@@ -23,6 +23,11 @@
 	color: var(--text-h);
 	font-weight: 700;
 	text-decoration: none;
+	font-size: 20px;
+
+	@include breakpoint.mobile {
+		margin-block-end: 8px;
+  	}
 }
 
 nav {
@@ -33,30 +38,35 @@ nav {
 nav a {
 	color: var(--text);
 	text-decoration: none;
+	font-weight: 500;
 }
 
 nav a:hover,
 nav a.active {
-
 	color: var(--accent);
 }
 
 .content-layout {
-	padding-block: 48px;
+	padding-block: 24px 48px;
+
+	:has(.home-page) & {
+		text-align: center;
+	}
 
 	@include breakpoint.mobile {
     	padding-block: 24px;
+		text-align: center;
   	}
 }
 
 .reservation-layout {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 	
 	@include breakpoint.mobile {
 		flex-direction: column;
 		justify-content: center;
-		align-items: center;
-		gap: 16px;
+		gap: 24px;
   	}
 }

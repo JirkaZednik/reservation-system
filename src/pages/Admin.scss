@@ -1,21 +1,29 @@
+@use './../styles/breakpoints' as breakpoint;
+
 .admin-page {
 	min-width: 0;
+    text-align: center;
+
+    @include breakpoint.desktop {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
-.admin-page h1 {
-	margin-block-start: 0;
-}
-
-.admin-login {
-	max-width: 440px;
+.admin-page .reservation-form button {  
+  margin-inline: auto;
 }
 
 .admin-heading {
-	align-items: center;
-	display: flex;
-	gap: 20px;
-	justify-content: space-between;
+	display: block;
 	margin-block-end: 28px;
+
+    @include breakpoint.mobile {
+        flex-direction: column;
+		align-items: center;
+    }
 }
 
 .admin-heading h1 {
@@ -60,11 +68,4 @@
 
 .admin-table .button {
 	margin: 0;
-}
-
-@media (max-width: 640px) {
-	.admin-heading {
-		align-items: flex-start;
-		flex-direction: column;
-	}
 }

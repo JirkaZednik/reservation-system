@@ -4,10 +4,10 @@
   display: grid;
   gap: 16px;
   max-width: 420px;
+  width: 100%;
 
   @include breakpoint.mobile {
 		padding-block-start: 12px;
-
   }
 }
 

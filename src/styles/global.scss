@@ -28,6 +28,7 @@ h1 {
   @include breakpoint.mobile {
     font-size: 30px;
     margin-block: 20px;
+    text-align: center;
   }
 }
 
