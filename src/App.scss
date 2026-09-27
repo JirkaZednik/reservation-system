@@ -25,3 +25,8 @@
     grid-template-columns: 1fr;
   }
 }
+
+[role='status'] {
+  color: var(--accept);
+  font-weight: 600;
+}
