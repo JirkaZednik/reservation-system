@@ -1,5 +1,4 @@
 import type { ButtonHTMLAttributes } from 'react' //Typ Reactu, který obsahuje všechny standardní HTML atributy pro button (disabled, onclick,..)
-import './Button.scss'
 
 /*
  Definice vstupních vlastností.

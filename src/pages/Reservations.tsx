@@ -5,8 +5,12 @@ import Input from '../components/Input/Input'
 import Button from '../components/Button/Button'
 import { reservationSchema, type ReservationForm } from '../schemas/reservationSchema'
 import type { ReservationTime } from '../constants/reservation'
+import { createReservation } from '../services/reservations'
+import { useState } from 'react'
 
 function Reservations() {
+	const [submitError, setSubmitError] = useState('')
+	const [submitSuccess, setSubmitSuccess] = useState(false)
 	const { register, handleSubmit, setValue, control, formState: { errors, isSubmitting } } = useForm<ReservationForm>({
 		resolver: zodResolver(reservationSchema),
 		defaultValues: {
@@ -23,8 +27,16 @@ function Reservations() {
 	const selectedCourt = useWatch({ control, name: 'court' })
 	const dateRegistration = register('date')
 
-	function onSubmit(data: ReservationForm) {
-		console.log('Nová rezervace:', data)
+	async function onSubmit(data: ReservationForm) {
+		setSubmitError('')
+		setSubmitSuccess(false)
+
+		try {
+			await createReservation(data)
+			setSubmitSuccess(true)
+		} catch (error) {
+			setSubmitError(error instanceof Error ? error.message : 'Rezervaci se nepodařilo odeslat.')
+		}
 	}
 
 	return (
@@ -41,6 +53,8 @@ function Reservations() {
 					}} id="date" label="Datum" type="date" error={errors.date?.message} />
 					{errors.times && <small className="input-error">{errors.times.message}</small>}
 					{errors.court && <small className="input-error">{errors.court.message}</small>}
+					{submitError && <small className="input-error" role="alert">{submitError}</small>}
+					{submitSuccess && <p role="status">Rezervace je potvrzená. Zkontrolujte e-mail s odkazem pro její správu.</p>}
 					<Button type="submit" disabled={isSubmitting}>Rezervovat termín</Button>
 				</form>
 			</div>

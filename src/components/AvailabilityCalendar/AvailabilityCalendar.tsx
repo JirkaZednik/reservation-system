@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { COURTS, RESERVATION_TIME_SLOTS, type ReservationTime } from '../../constants/reservation'
+import { supabase } from '../../lib/supabase'
 import './AvailabilityCalendar.scss'
 
 type AvailabilityCalendarProps = {
@@ -15,44 +16,54 @@ type OccupiedSlot = {
   court: number
 }
 
-const storageKey = 'reservation-system:occupied-slots'
-
-function getInitialOccupiedSlots(): OccupiedSlot[] {
-  const storedSlots = localStorage.getItem(storageKey)
-  const existingSlots = storedSlots ? JSON.parse(storedSlots) as OccupiedSlot[] : []
-  const now = new Date()
-  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
-  const demoSlots: OccupiedSlot[] = [
-    { date: today, time: '10:00', court: 2 },
-    { date: today, time: '13:00', court: 4 },
-    { date: today, time: '18:00', court: 1 },
-  ]
-  const initialSlots = [...existingSlots]
-
-  for (const demoSlot of demoSlots) {
-    const alreadyStored = initialSlots.some(
-      (slot) => slot.date === demoSlot.date && slot.time === demoSlot.time && slot.court === demoSlot.court,
-    )
-
-    if (!alreadyStored) {
-      initialSlots.push(demoSlot)
-    }
-  }
-
-  if (initialSlots.length !== existingSlots.length) {
-    localStorage.setItem(storageKey, JSON.stringify(initialSlots))
-  }
-
-  return initialSlots
-}
-
 function AvailabilityCalendar({
   selectedDate,
   selectedTimes,
   selectedCourt,
   onSlotSelect,
 }: AvailabilityCalendarProps) {
-  const [occupiedSlots] = useState(getInitialOccupiedSlots)
+  const [occupiedSlots, setOccupiedSlots] = useState<OccupiedSlot[]>([])
+  const [availabilityLoading, setAvailabilityLoading] = useState(false)
+  const [availabilityError, setAvailabilityError] = useState(false)
+
+  useEffect(() => {
+    const supabaseClient = supabase
+    if (!selectedDate) {
+      return
+    }
+
+    let ignoreResult = false
+
+    async function loadOccupiedSlots() {
+      if (!supabaseClient) return
+
+      setAvailabilityError(false)
+      setAvailabilityLoading(true)
+
+      const { data, error } = await supabaseClient.rpc('get_occupied_slots', { p_date: selectedDate })
+
+      if (!ignoreResult) {
+        if (error) {
+          setAvailabilityError(true)
+          setOccupiedSlots([])
+        } else {
+          setOccupiedSlots((data ?? []).map((slot: { court_id: number; start_time: string }) => ({
+            date: selectedDate,
+            time: slot.start_time,
+            court: slot.court_id,
+          })))
+        }
+
+        setAvailabilityLoading(false)
+      }
+    }
+
+    void loadOccupiedSlots()
+
+    return () => {
+      ignoreResult = true
+    }
+  }, [selectedDate])
 
   function isOccupied(time: string, court: number) {
     return occupiedSlots.some( //some hledá, zda v poli existuje alespoň jeden odpovídající objekt.
@@ -90,34 +101,42 @@ function AvailabilityCalendar({
         <h2>Dostupnost hřišť</h2>
         <p>{selectedDate}</p>
       </div>
-      <div className="availability-scroll">
-        <div className="availability-grid">
-          <div className="availability-corner" aria-hidden="true" />
-          {RESERVATION_TIME_SLOTS.map((time) => <div className="availability-time" key={time}>{time}</div>)}
-          {COURTS.map((court) => (
-            <div className="availability-row" key={court}>
-              <div className="availability-court">Hřiště {court}</div>
-              {RESERVATION_TIME_SLOTS.map((time) => {
-                const occupied = isOccupied(time, court)
-                const selected = selectedCourt === court && selectedTimes.includes(time)
+      {!supabase ? (
+        <p className="availability-error" role="alert">Kalendář není dostupný, protože chybí konfigurace Supabase.</p>
+      ) : (
+        <>
+          {availabilityLoading && <p role="status">Načítám dostupnost…</p>}
+          {availabilityError && <p className="availability-error" role="alert">Dostupnost se nepodařilo načíst. Zkuste změnit datum nebo stránku obnovit.</p>}
+          <div className="availability-scroll">
+            <div className="availability-grid">
+              <div className="availability-corner" aria-hidden="true" />
+              {RESERVATION_TIME_SLOTS.map((time) => <div className="availability-time" key={time}>{time}</div>)}
+              {COURTS.map((court) => (
+                <div className="availability-row" key={court}>
+                  <div className="availability-court">Hřiště {court}</div>
+                  {RESERVATION_TIME_SLOTS.map((time) => {
+                    const occupied = isOccupied(time, court)
+                    const selected = selectedCourt === court && selectedTimes.includes(time)
 
-                return (
-                  <button
-                    className={`availability-slot${selected ? ' selected' : ''}`}
-                    disabled={occupied}
-                    key={`${time}-${court}`}
-                    onClick={() => handleSlotSelect(time, court)}
-                    type="button"
-                    aria-label={`${time}, hřiště ${court}${occupied ? ', obsazeno' : selected ? ', vybráno' : ', volné'}${!selected && selectedTimes.length >= 8 ? ', dosažen limit 8 hodin' : ''}`}
-                  >
-                    {occupied ? 'Obsazeno' : selected ? 'Vybráno' : 'Volné'}
-                  </button>
-                )
-              })}
+                    return (
+                      <button
+                        className={`availability-slot${selected ? ' selected' : ''}`}
+                        disabled={occupied || availabilityLoading || availabilityError}
+                        key={`${time}-${court}`}
+                        onClick={() => handleSlotSelect(time, court)}
+                        type="button"
+                        aria-label={`${time}, hřiště ${court}${occupied ? ', obsazeno' : selected ? ', vybráno' : ', volné'}${!selected && selectedTimes.length >= 8 ? ', dosažen limit 8 hodin' : ''}`}
+                      >
+                        {occupied ? 'Obsazeno' : selected ? 'Vybráno' : 'Volné'}
+                      </button>
+                    )
+                  })}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

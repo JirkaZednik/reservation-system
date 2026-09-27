@@ -1,0 +1,70 @@
+.admin-page {
+	min-width: 0;
+}
+
+.admin-page h1 {
+	margin-block-start: 0;
+}
+
+.admin-login {
+	max-width: 440px;
+}
+
+.admin-heading {
+	align-items: center;
+	display: flex;
+	gap: 20px;
+	justify-content: space-between;
+	margin-block-end: 28px;
+}
+
+.admin-heading h1 {
+	margin-block-end: 8px;
+}
+
+.admin-heading p {
+	color: var(--text-input);
+}
+
+.admin-error {
+	color: var(--error);
+}
+
+.admin-table-scroll {
+	overflow-x: auto;
+}
+
+.admin-table {
+	border-collapse: collapse;
+	min-width: 720px;
+	text-align: left;
+	width: 100%;
+}
+
+.admin-table th,
+.admin-table td {
+	border-bottom: 1px solid var(--border);
+	padding: 14px 12px;
+	vertical-align: top;
+}
+
+.admin-table th {
+	background: var(--accent-bg);
+	color: var(--text-h);
+	font-size: 14px;
+}
+
+.admin-table td {
+	font-size: 14px;
+}
+
+.admin-table .button {
+	margin: 0;
+}
+
+@media (max-width: 640px) {
+	.admin-heading {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}

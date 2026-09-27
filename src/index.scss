@@ -1,2 +1,4 @@
 @use './styles/variables' as *;
 @use './styles/global' as *;
+@use './components/Button/Button';
+@use './components/Input/Input';

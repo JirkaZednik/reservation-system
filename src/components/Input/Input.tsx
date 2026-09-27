@@ -1,5 +1,4 @@
 import type { InputHTMLAttributes } from 'react'
-import './Input.scss'
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 	label: string

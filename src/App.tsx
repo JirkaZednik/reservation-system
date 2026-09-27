@@ -6,6 +6,7 @@ import Layout from './components/Layout/Layout'
 const Home = lazy(() => import('./pages/Home'))
 const Admin = lazy(() => import('./pages/Admin'))
 const Reservations = lazy(() => import('./pages/Reservations'))
+const CancelReservation = lazy(() => import('./pages/CancelReservation'))
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/cancel" element={<CancelReservation />} />
           </Routes>
         </Suspense>
       </Layout>
