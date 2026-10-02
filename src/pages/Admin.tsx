@@ -50,6 +50,7 @@ function Admin() {
 	}, [])
 
 	useEffect(() => {
+		// This UI check is backed by database RLS policies; it is not the security boundary.
 		if (!supabase || session?.user.app_metadata.role !== 'admin') {
 			return
 		}

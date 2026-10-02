@@ -32,6 +32,7 @@ function AvailabilityCalendar({
       return
     }
 
+    // Ignore stale responses if the selected date changes before the request finishes.
     let ignoreResult = false
 
     async function loadOccupiedSlots() {
@@ -66,12 +67,13 @@ function AvailabilityCalendar({
   }, [selectedDate])
 
   function isOccupied(time: string, court: number) {
-    return occupiedSlots.some( //some hledá, zda v poli existuje alespoň jeden odpovídající objekt.
+    return occupiedSlots.some(
       (slot) => slot.date === selectedDate && slot.time === time && slot.court === court,
     )
   }
 
   function handleSlotSelect(time: ReservationTime, court: number) {
+    // Keep a reservation on one court and allow at most eight hourly slots.
     if (selectedCourt !== court) {
       onSlotSelect([time], court)
       return

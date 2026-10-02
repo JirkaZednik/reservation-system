@@ -1,3 +1,8 @@
+/*
+  This migration creates a table to store rate limit information for reservations.
+  Store hashed identifiers and limit each one to five requests per 15-minute window.
+*/
+
 create table public.reservation_rate_limits (
   identifier_hash text primary key check (identifier_hash ~ '^[a-f0-9]{64}$'),
   window_started_at timestamptz not null,

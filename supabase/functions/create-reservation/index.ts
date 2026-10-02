@@ -58,6 +58,7 @@ Deno.serve(async (request) => {
     return jsonResponse({ error: 'Neplatná data požadavku.' }, 400)
   }
 
+  // Repeat validation here because public clients can bypass the browser form.
   const { name, email, date, times, court } = payload as Record<string, unknown>
   const normalizedName = typeof name === 'string' ? name.trim() : ''
   const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : ''
@@ -109,6 +110,7 @@ Deno.serve(async (request) => {
     }
   }
 
+  // Store only the hash; send the raw cancellation token to the customer by email.
   const cancellationToken = createToken()
   const cancellationTokenHash = await hashToken(cancellationToken)
 
@@ -154,6 +156,7 @@ Deno.serve(async (request) => {
   }
 
   if (!emailResponse.ok) {
+    // Avoid leaving a confirmed reservation behind if its confirmation email fails.
     await supabase.from('reservations')
       .update({ status: 'cancelled', cancelled_at: new Date().toISOString() })
       .eq('id', reservationId)

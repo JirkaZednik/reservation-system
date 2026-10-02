@@ -1,4 +1,4 @@
-//Sdílená pravidla rezervací: dostupné časy a hřiště.
+// Shared booking options used by the form and availability calendar.
 export const RESERVATION_TIME_SLOTS = [
 	'09:00',
 	'10:00',

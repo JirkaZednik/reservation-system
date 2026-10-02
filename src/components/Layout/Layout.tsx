@@ -1,11 +1,4 @@
 import type { ReactNode } from 'react'
-/*
-	NavLink:
-	- Speciální odkaz pro routing v React Routeru. (místo <a>)
-	- Pracuje s aktuální URL
-	- Přidá automaticky class active, když je stránka aktivní
-	- Zajistí SPA navigaci bez reloadu
- */
 import { NavLink } from 'react-router-dom'
 import './Layout.scss'
 
@@ -13,7 +6,6 @@ type LayoutProps = {
 	children: ReactNode
 }
 
-//Children v Layout je to, co je mezi otevírací a zavírací značkou <Layout> v App.tsx
 function Layout({ children }: LayoutProps) {
 	return (
 		<>

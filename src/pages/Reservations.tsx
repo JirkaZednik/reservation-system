@@ -22,7 +22,8 @@ function Reservations() {
 		},
 	})
 
-	const selectedDate = useWatch({ control, name: 'date' }) //useWatch sleduje konkrétní pole formuláře/kalendáře a vrací jeho aktuální hodnotu v reálném čase (když se změní datum/čas/hřiště React znovu vykreslí komponentu)
+	// Keep the availability calendar synchronized with the form values.
+	const selectedDate = useWatch({ control, name: 'date' })
 	const selectedTimes = useWatch({ control, name: 'times' })
 	const selectedCourt = useWatch({ control, name: 'court' })
 	const dateRegistration = register('date')
