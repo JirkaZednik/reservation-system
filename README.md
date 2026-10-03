@@ -1,6 +1,6 @@
 # Rezervační systém
 
-Webová aplikace pro rezervaci sportovních hřišť. Uživatel si vybere datum, jedno až osm časových slotů a hřiště; aktuální obsazenost se načítá ze Supabase. Po vytvoření rezervace systém odešle potvrzovací e-mail s odkazem pro její správu a zrušení. 
+Webová aplikace pro rezervaci sportovních hřišť. Uživatel si vybere datum, jedno až osm časových slotů a hřiště; aktuální obsazenost se načítá ze Supabase. Rezervaci lze spravovat a zrušit odkazem z e-mailu nebo přímo v demo režimu.
 
 ## Funkce
 
@@ -8,7 +8,7 @@ Webová aplikace pro rezervaci sportovních hřišť. Uživatel si vybere datum,
 - Validace formuláře na klientovi i serveru.
 - Kontrola dostupnosti a ukládání rezervací do Supabase.
 - Demo režim potvrzuje rezervaci v aplikaci a nabídne odkaz pro její správu a zrušení.
-- Produkční režim může odesílat potvrzovací e-mail s odkazem pro zrušení.
+- Produkční režim může odesílat potvrzovací e-mail s odkazem pro zrušení (je nutná vlastní doména).
 - Administrace chráněná přihlášením a rolí správce/admin.
 - Omezení počtu požadavků na vytváření rezervací.
 - Responzivní rozhraní a navigace mezi stránkami bez opětovného načtení aplikace (SPA)
@@ -21,8 +21,9 @@ Administrace: https://jiri-reservation-system.vercel.app/admin
 Visitor login pro ukázku admin sekce:
 - E-mail: visitor@email.cz
 - Heslo: gu7-LMnY
+- Tento účet je veřejný a může spravovat rezervace, používej ho pouze s fiktivními ukázkovými daty.
 
-Tento účet je veřejný a může spravovat rezervace, používej ho pouze s fiktivními ukázkovými daty.
+Portfolio demo běží v režimu `DEMO_MODE=true`: po vytvoření rezervace se zobrazí odkaz pro její správu a zrušení přímo v aplikaci a potvrzovací e-mail se neposílá. Resend v testovacím režimu používá testovacího odesílatele, který není určený k doručování libovolným návštěvníkům. Pro posílání e-mailů všem zákazníkům je nutné v Resend ověřit vlastní doménu a nastavit odesílatele z této domény.
 
 ## Použité technologie
 
@@ -38,7 +39,7 @@ Tento účet je veřejný a může spravovat rezervace, používej ho pouze s fi
 
 - Node.js a npm
 - Supabase projekt s aplikovanými migracemi a nasazenými Edge Functions (create-reservation, cancel-reservation)
-- Resend účet a ověřená odesílací e-mailová adresa pro odesílání potvrzení
+- Resend účet a ověřená odesílací doména pouze pokud chceš zapnout e-mailový režim
 
 ## Spuštění lokálně
 

@@ -1,10 +1,12 @@
 import { z } from 'zod'
-import { COURTS, RESERVATION_TIME_SLOTS } from '../constants/reservation'
+import { COURTS, getLocalDateString, RESERVATION_TIME_SLOTS } from '../constants/reservation'
 
 export const reservationSchema = z.object({
   name: z.string().trim().min(4, 'Zadejte správné jméno.'),
   email: z.email('Zadejte platný e-mail.'),
-  date: z.string().min(1, 'Vyberte datum.'),
+  date: z.string()
+    .min(1, 'Vyberte datum.')
+    .refine((date) => date >= getLocalDateString(), 'Datum nemůže být v minulosti.'),
   times: z.array(z.enum(RESERVATION_TIME_SLOTS))
     .min(1, 'Vyberte alespoň jeden čas.')
     .max(8, 'Lze vybrat nejvýše 8 hodin.')

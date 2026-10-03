@@ -8,6 +8,7 @@ import type { ReservationTime } from '../constants/reservation'
 import { createReservation } from '../services/reservations'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getLocalDateString } from '../constants/reservation'
 
 function Reservations() {
 	const [submitError, setSubmitError] = useState('')
@@ -52,7 +53,7 @@ function Reservations() {
 						dateRegistration.onChange(event)
 						setValue('times', [])
 						setValue('court', 0)
-					}} id="date" label="Datum" type="date" error={errors.date?.message} />
+					}} id="date" label="Datum" type="date" min={getLocalDateString()} error={errors.date?.message} />
 					{errors.times && <small className="input-error">{errors.times.message}</small>}
 					{errors.court && <small className="input-error">{errors.court.message}</small>}
 					{submitError && <small className="input-error" role="alert">{submitError}</small>}
