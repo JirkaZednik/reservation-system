@@ -42,8 +42,9 @@ Deno.serve(async (request) => {
   const resendApiKey = Deno.env.get('RESEND_API_KEY')
   const emailFrom = Deno.env.get('RESERVATION_EMAIL_FROM')
   const appUrl = Deno.env.get('APP_URL')
+  const demoMode = Deno.env.get('DEMO_MODE') === 'true'
 
-  if (!supabaseUrl || !serviceRoleKey || !resendApiKey || !emailFrom || !appUrl) {
+  if (!supabaseUrl || !serviceRoleKey || !appUrl || (!demoMode && (!resendApiKey || !emailFrom))) {
     return jsonResponse({ error: 'Rezervace teď není možné odeslat. Zkuste to prosím později.' }, 503)
   }
 
@@ -132,6 +133,11 @@ Deno.serve(async (request) => {
 
   const cancelUrl = new URL('/cancel', appUrl)
   cancelUrl.searchParams.set('token', cancellationToken)
+
+  if (demoMode) {
+    return jsonResponse({ reservationId, cancellationToken, emailSent: false }, 201)
+  }
+
   const safeName = escapeHtml(normalizedName)
   const safeTimes = selectedTimes.map((time) => `<li>${escapeHtml(time)}</li>`).join('')
 

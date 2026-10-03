@@ -7,10 +7,11 @@ import { reservationSchema, type ReservationForm } from '../schemas/reservationS
 import type { ReservationTime } from '../constants/reservation'
 import { createReservation } from '../services/reservations'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function Reservations() {
 	const [submitError, setSubmitError] = useState('')
-	const [submitSuccess, setSubmitSuccess] = useState(false)
+	const [cancellationToken, setCancellationToken] = useState<string | null>(null)
 	const { register, handleSubmit, setValue, control, formState: { errors, isSubmitting } } = useForm<ReservationForm>({
 		resolver: zodResolver(reservationSchema),
 		defaultValues: {
@@ -30,11 +31,11 @@ function Reservations() {
 
 	async function onSubmit(data: ReservationForm) {
 		setSubmitError('')
-		setSubmitSuccess(false)
+		setCancellationToken(null)
 
 		try {
-			await createReservation(data)
-			setSubmitSuccess(true)
+			const result = await createReservation(data)
+			setCancellationToken(result.cancellationToken ?? '')
 		} catch (error) {
 			setSubmitError(error instanceof Error ? error.message : 'Rezervaci se nepodařilo odeslat.')
 		}
@@ -55,7 +56,18 @@ function Reservations() {
 					{errors.times && <small className="input-error">{errors.times.message}</small>}
 					{errors.court && <small className="input-error">{errors.court.message}</small>}
 					{submitError && <small className="input-error" role="alert">{submitError}</small>}
-					{submitSuccess && <p role="status">Rezervace je potvrzená. Zkontrolujte e-mail s odkazem pro její správu.</p>}
+					{cancellationToken !== null && (
+						<div className="reservation-success" role="status">
+							<p>Rezervace je potvrzená.</p>
+							{cancellationToken ? (
+								<Link className="button button--secondary" to={`/cancel?token=${encodeURIComponent(cancellationToken)}`}>
+									Spravovat / zrušit rezervaci
+								</Link>
+							) : (
+								<p>Odkaz pro správu rezervace najdete v potvrzovacím e-mailu.</p>
+							)}
+						</div>
+					)}
 					<Button type="submit" disabled={isSubmitting}>Rezervovat termín</Button>
 				</form>
 			</div>

@@ -19,5 +19,9 @@ export async function createReservation(reservation: ReservationForm) {
     throw new Error('Rezervaci se nepodařilo odeslat. Zkontrolujte připojení a zkuste to znovu.')
   }
 
-  return data as { reservationId: string }
+  return data as {
+    reservationId: string
+    cancellationToken?: string
+    emailSent?: boolean
+  }
 }

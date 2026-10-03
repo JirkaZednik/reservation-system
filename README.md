@@ -7,7 +7,8 @@ Webová aplikace pro rezervaci sportovních hřišť. Uživatel si vybere datum,
 - Výběr datumu, hřiště a dostupných hodinových slotů.
 - Validace formuláře na klientovi i serveru.
 - Kontrola dostupnosti a ukládání rezervací do Supabase.
-- Potvrzovací e-mail a možnost zrušit rezervaci přes zabezpečený odkaz.
+- Demo režim potvrzuje rezervaci v aplikaci a nabídne odkaz pro její správu a zrušení.
+- Produkční režim může odesílat potvrzovací e-mail s odkazem pro zrušení.
 - Administrace chráněná přihlášením a rolí správce/admin.
 - Omezení počtu požadavků na vytváření rezervací.
 - Responzivní rozhraní a navigace mezi stránkami bez opětovného načtení aplikace (SPA)
@@ -64,6 +65,8 @@ npm run dev
 Vite vypíše lokální adresu aplikace, obvykle `http://localhost:5173`.
 
 Pro odesílání rezervací a e-mailů musí být v Supabase nastavené také Edge Functions a jejich tajné proměnné, včetně `RESEND_API_KEY`, `RESERVATION_EMAIL_FROM` a `APP_URL`. `SUPABASE_SERVICE_ROLE_KEY` patří výhradně na server do prostředí Edge Functions; nikdy ho nevkládej do `VITE_*` proměnné ani do klientského kódu.
+
+Pro portfolio demo lze v Supabase nastavit secret `DEMO_MODE=true`. V tomto režimu se e-mail neodesílá; odkaz pro správu a zrušení rezervace se zobrazí přímo po jejím vytvoření. Bez tohoto secretu zůstává aktivní e-mailový režim.
 
 ## Dostupné příkazy
 
