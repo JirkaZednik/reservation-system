@@ -12,6 +12,17 @@ Webová aplikace pro rezervaci sportovních hřišť. Uživatel si vybere datum,
 - Omezení počtu požadavků na vytváření rezervací.
 - Responzivní rozhraní a navigace mezi stránkami bez opětovného načtení aplikace (SPA)
 
+## Demo přístup
+
+Produkční demo: https://jiri-reservation-system.vercel.app/
+Administrace: https://jiri-reservation-system.vercel.app/admin
+
+Visitor login pro ukázku admin sekce:
+- E-mail: visitor@email.cz
+- Heslo: gu7-LMnY
+
+Tento účet je veřejný a může spravovat rezervace, používej ho pouze s fiktivními ukázkovými daty.
+
 ## Použité technologie
 
 - React + TypeScript + Vite
