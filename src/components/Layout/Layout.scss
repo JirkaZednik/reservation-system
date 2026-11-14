@@ -5,10 +5,9 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.7);
-	background: rgba(255, 255, 255, 0.65);
-	backdrop-filter: blur(12px);
-	-webkit-backdrop-filter: blur(12px);
+	border-bottom: 1px solid var(--border);
+	// Must stay opaque: sticky header would otherwise let scrolled content show through it
+	background: #fff;
 	position: sticky;
 	top: 0;
 	z-index: 10;
@@ -30,10 +29,6 @@
 	font-weight: 700;
 	text-decoration: none;
 	font-size: 20px;
-	background: linear-gradient(90deg, var(--color-primary), var(--accent));
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
 
 	@include breakpoint.mobile {
 		margin-block-end: 8px;
@@ -51,9 +46,15 @@ nav a {
 	font-weight: 500;
 }
 
+nav a {
+	border-bottom: 2px solid transparent;
+	padding-block: 2px;
+}
+
 nav a:hover,
 nav a.active {
-	color: var(--accent);
+	color: var(--text-h);
+	border-bottom-color: var(--accent);
 }
 
 .content-layout {
