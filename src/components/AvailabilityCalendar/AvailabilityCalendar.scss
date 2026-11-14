@@ -1,6 +1,10 @@
 .availability-calendar {
-	border: 1px solid var(--border);
-	border-radius: 8px;
+	background: var(--surface);
+	border: 1px solid var(--surface-border);
+	border-radius: 16px;
+	box-shadow: var(--shadow-soft);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
 	padding: 20px;
 }
 
@@ -96,7 +100,9 @@
 }
 
 .availability-empty {
-	border: 1px dashed var(--border);
+	background: var(--surface);
+	border: 1px dashed rgba(37, 99, 235, 0.3);
+	border-radius: 16px;
 	color: var(--text-input);
 	padding: 24px;
 	text-align: center;

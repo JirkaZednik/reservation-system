@@ -1,6 +1,27 @@
 @use './variables' as *;
 @use './breakpoints' as breakpoint;
 
+body {
+	margin: 0;
+	min-height: 100vh;
+	background: var(--page-bg);
+	background-attachment: fixed;
+}
+
+// Faint court-line pattern over the gradient
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background-image:
+		linear-gradient(rgba(37, 99, 235, 0.08) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(37, 99, 235, 0.08) 1px, transparent 1px);
+	background-size: 48px 48px;
+	mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+}
+
 .container {
 	margin: 0 auto;
 	max-width: 1200px;

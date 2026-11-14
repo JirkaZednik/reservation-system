@@ -5,6 +5,14 @@
   gap: 16px;
   max-width: 420px;
   width: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 
   @include breakpoint.mobile {
 		padding-block-start: 12px;
@@ -29,4 +37,14 @@
 [role='status'] {
   color: var(--accept);
   font-weight: 600;
+}
+.home-page {
+  padding-block: 64px 32px;
+
+  h1 {
+    background: linear-gradient(90deg, var(--text-h) 0%, var(--color-primary) 55%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }

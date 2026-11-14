@@ -5,7 +5,13 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	border-bottom: 1px solid var(--border);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+	background: rgba(255, 255, 255, 0.65);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	position: sticky;
+	top: 0;
+	z-index: 10;
 	padding-block: 20px;
 	padding-inline: 32px;
 
@@ -24,6 +30,10 @@
 	font-weight: 700;
 	text-decoration: none;
 	font-size: 20px;
+	background: linear-gradient(90deg, var(--color-primary), var(--accent));
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
 
 	@include breakpoint.mobile {
 		margin-block-end: 8px;
